@@ -1,9 +1,12 @@
 require 'rubygems'
+require 'rack'
 require 'sinatra/base'
 
 module App
   
   class Main < Sinatra::Base
+    disable :logging
+    
     get '/' do
       'this / from class Main'
     end
@@ -14,6 +17,9 @@ module App
   end
 
   class Foo < Sinatra::Base
+    
+    use Rack::CommonLogger
+    
     get '' do
       'this is / from class Foo mapped to /foo'
     end
@@ -24,6 +30,8 @@ module App
   end
   
   class Bar < Sinatra::Base
+    disable :logging
+        
     get '' do
       'this is / from class Bar mapped to /bar'
     end
