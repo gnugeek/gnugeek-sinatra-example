@@ -18,6 +18,16 @@ module App
 
   class Foo < Sinatra::Base
     
+    # only requests to /foo/* will log, as we have
+    # disabled logging in the config.ru, and 
+    # each sinatra base class can have it's own
+    # middleware stack.  one problem: the request
+    # uris logged are relative to where this class
+    # is mounted in the config.ru, so requests to
+    # /foo/hello get logged as:
+    # 127.0.0.1 - - [21/Jan/2009 06:20:14] "GET /hello HTTP/1.1" 200 44 0.0004
+    
+    
     use Rack::CommonLogger
     
     get '' do

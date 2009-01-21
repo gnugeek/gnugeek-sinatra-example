@@ -5,7 +5,6 @@ require 'sinatra'
  
 require File.join(File.dirname(__FILE__), 'app.rb')
  
-disable :run
 disable :logging
  
 set :environment, :development
