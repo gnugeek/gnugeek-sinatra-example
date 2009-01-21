@@ -14,7 +14,7 @@ module App
   end
 
   class Foo < Sinatra::Base
-    get '/' do
+    get '' do
       'this is / from class Foo mapped to /foo'
     end
   
@@ -24,7 +24,7 @@ module App
   end
   
   class Bar < Sinatra::Base
-    get '/' do
+    get '' do
       'this is / from class Bar mapped to /bar'
     end
     
