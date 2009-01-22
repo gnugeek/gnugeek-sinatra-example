@@ -9,6 +9,11 @@ disable :logging
  
 set :environment, :development
 
+rack = proc do |env|
+  [200, { 'Content-Type' => 'text/html' }, "#{env['rack.session'].inspect}"]
+end
+
+
 map "/" do
   run App::Main
 end
@@ -19,4 +24,9 @@ end
 
 map "/bar" do
   run App::Bar
+end
+
+map "/rack" do
+ use Rack::Session::Cookie
+ run rack
 end
