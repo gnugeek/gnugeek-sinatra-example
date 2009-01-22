@@ -7,7 +7,7 @@ module App
   class Main < Sinatra::Base
     
     # enabling rack sessions for Main
-    set :sessions, true
+    enable :static, :sessions
 
     # puts something in the session to play with.
     # it will be visible from any other app
@@ -31,7 +31,7 @@ module App
   class Foo < Sinatra::Base
     
     # enabling rack sessions for Foo
-    set :sessions, true
+    enable :static, :sessions
 
     # use Rack::Auth::Basic, and set the user
     # and password to foo -only- for this servlet.
