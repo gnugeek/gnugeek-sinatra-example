@@ -7,7 +7,6 @@ module App
   class Main < Sinatra::Base
     
     # enabling rack sessions for Main
-    enable :static, :sessions    
     set :sessions, true
 
     # puts something in the session to play with.
@@ -32,7 +31,6 @@ module App
   class Foo < Sinatra::Base
     
     # enabling rack sessions for Foo
-    enable :static, :sessions
     set :sessions, true
 
     # use Rack::Auth::Basic, and set the user
