@@ -58,6 +58,8 @@ module App
   end
   
   class Bar < Sinatra::Base
+    
+    set :sessions, false
    
     # use Rack::Auth::Basic, and set the user
     # and password to bar -only- for this servlet.
