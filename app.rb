@@ -5,42 +5,67 @@ require 'sinatra/base'
 module App
   
   class Main < Sinatra::Base
-    disable :logging
     
+    # enabling rack sessions for Main
+    enable :static, :sessions    
+    set :sessions, true
+
+    # puts something in the session to play with.
+    # it will be visible from any other app
+    # on this server using rack sessions.
     get '/' do
+      session[:Main] = "set from Main"
       'this / from class Main'
     end
   
     get '/hello' do
       'this is hello from class Main'
     end 
+
+    # see what's in the rack session
+    get '/session' do
+      "#{session.inspect}"
+    end
+
   end
 
   class Foo < Sinatra::Base
     
-    # only requests to /foo/* will log, as we have
-    # disabled logging in the config.ru, and 
-    # each sinatra base class can have it's own
-    # middleware stack.  one problem: the request
-    # uris logged are relative to where this class
-    # is mounted in the config.ru, so requests to
-    # /foo/hello get logged as:
-    # 127.0.0.1 - - [21/Jan/2009 06:20:14] "GET /hello HTTP/1.1" 200 44 0.0004
+    # enabling rack sessions for Foo
+    enable :static, :sessions
+    set :sessions, true
+
+    # use Rack::Auth::Basic, and set the user
+    # and password to foo -only- for this servlet.
+    use Rack::Auth::Basic do |username, password|
+      username == 'foo' && password == 'foo'
+    end
     
-    
-    use Rack::CommonLogger
-    
+    # puts something in the session to play with.
+    # it will be visible from any other app
+    # on this server using rack sessions.
     get '' do
+      session[:Foo] = "set from Foo"
       'this is / from class Foo mapped to /foo'
     end
   
     get '/hello' do
       'this is /hello from class Foo mapped to /foo'
     end
+
+    # see what's in the rack session
+    get '/session' do
+      "#{session.inspect}"
+    end
   end
   
   class Bar < Sinatra::Base
-    disable :logging
+   
+    # use Rack::Auth::Basic, and set the user
+    # and password to bar -only- for this servlet.
+    use Rack::Auth::Basic do |username, password|
+      username == 'bar' && password == 'bar'
+    end
         
     get '' do
       'this is / from class Bar mapped to /bar'
@@ -48,6 +73,13 @@ module App
     
     get '/hello' do
       'this is /hello from class Bar mapped to /bar'
+    end
+
+    # things set in the session by Main and Foo
+    # will not show up here! we are not using
+    # rack sessions in Bar.
+    get '/session' do
+      "#{session.inspect}"
     end
   end
 
